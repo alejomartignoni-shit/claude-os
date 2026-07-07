@@ -1,0 +1,115 @@
+{
+  "version": "2",
+  "project": "Claude OS — Local AI Operating System Dashboard",
+  "stories": [
+    {
+      "id": "US-01",
+      "title": "Project scaffold: Vite+React frontend + Python FastAPI backend",
+      "acceptanceCriteria": [
+        "claude-os/ directory exists at C:\\Users\\Alejo\\claude-os with frontend/ and backend/ subdirectories",
+        "frontend/package.json has react, react-dom, react-router-dom, recharts, lucide-react",
+        "frontend/vite.config.js proxies /api to localhost:8082",
+        "backend/requirements.txt has fastapi, uvicorn, python-dotenv",
+        "backend/main.py exists with CORS and basic health route",
+        "npm install runs without errors in frontend/"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-02",
+      "title": "App shell: sidebar navigation + dark theme + routing",
+      "acceptanceCriteria": [
+        "index.css defines CSS tokens: --bg-base, --bg-surface, --bg-elevated, --border, --text, --text-muted, --accent-green, --accent-gold",
+        "Sidebar.jsx renders: Home, Memory, Skills, Agents, Dream, Activity nav items with lucide icons",
+        "Sidebar shows agent status dot (green = online) in top right",
+        "App.jsx uses react-router-dom with routes for all 6 pages",
+        "Active nav item is visually highlighted",
+        "Dark theme: background #08090b, text #e8eaf0"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-03",
+      "title": "Home page: greeting, stats cards, system status",
+      "acceptanceCriteria": [
+        "Home.jsx renders 'Good [morning/afternoon/evening], Alejo.' greeting",
+        "3 stat cards: Active Skills (102), Memory Files (506), Last Sync",
+        "Stats fetched from /api/stats endpoint returning real data",
+        "System status grid shows backend/memory/dream status"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-04",
+      "title": "Memory page: file index + SVG force graph + source filters",
+      "acceptanceCriteria": [
+        "Memory.jsx shows 490 files indexed count",
+        "SVG force graph renders nodes from Obsidian (490) + Claude memory (16) files",
+        "Nodes color coded: gold = Obsidian, blue = Claude memory",
+        "Filter buttons: All, Obsidian, Local Claude work",
+        "Clicking a node shows filename in inspector",
+        "Stats bar shows counts per source"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-05",
+      "title": "Skills Library page: 102 skills from ~/.claude/skills/",
+      "acceptanceCriteria": [
+        "Skills.jsx shows 102 skills from /api/skills",
+        "Numbered cards (01-102) in responsive grid",
+        "Each card: skill name uppercase, description, category badge",
+        "Search/filter works in real time",
+        "Count badge updates on filter"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-06",
+      "title": "Agents page: 15 agents by tier hierarchy",
+      "acceptanceCriteria": [
+        "Agents.jsx shows 15 agents from /api/agents",
+        "Grouped by tier: orchestrator (3) > specialist (6) > worker (6)",
+        "Each card: name, description, model tag, online/offline status",
+        "Status ONLINE (green) for all registered agents"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-07",
+      "title": "Dream function: overnight pattern analysis cards",
+      "acceptanceCriteria": [
+        "Dream.jsx shows empty state when no dream exists",
+        "Run Dream Now button calls /api/dream/run",
+        "Dream uses Claude CLI subprocess with Obsidian + memory context",
+        "Results shown as pattern cards with type badge, title, description, why"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-08",
+      "title": "Python FastAPI backend: all 8 routes working",
+      "acceptanceCriteria": [
+        "GET /api/health → {status: ok}",
+        "GET /api/stats → {skills_count: 102, memory_files: 16, obsidian_files: 490}",
+        "GET /api/memory/files → 490 file list",
+        "GET /api/memory/graph → {nodes: 490, links: 553}",
+        "GET /api/skills → 102 skills",
+        "GET /api/agents → 15 agents",
+        "GET /api/dream/latest → null or dream JSON",
+        "POST /api/dream/run → triggers claude -p subprocess"
+      ],
+      "passes": true
+    },
+    {
+      "id": "US-09",
+      "title": "PM2 ecosystem config + both servers verified running",
+      "acceptanceCriteria": [
+        "ecosystem.config.js at claude-os/ root with backend (port 8082) and frontend (port 5174)",
+        "Frontend http://localhost:5174 returns HTTP 200",
+        "Backend http://localhost:8082/api/health returns {status: ok}"
+      ],
+      "passes": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules/
+frontend/dist/
+frontend/.vite/
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+backend/.venv/
+logs/
+*.log
+dream_history.json
+.env
