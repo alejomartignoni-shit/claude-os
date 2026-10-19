@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../api.js'
 
 const TIER_ORDER = { orchestrator: 0, specialist: 1, worker: 2 }
-const TIER_EMOJI = { orchestrator: '🎯', specialist: '⚡', worker: '🔧' }
+const TIER_EMOJI = { orchestrator: '🎯', specialist: '⚡', worker: '🔧', installed: '📦' }
 
 export default function Agents() {
   const [agents, setAgents] = useState([])
@@ -52,6 +52,7 @@ export default function Agents() {
                     <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
                       {tier === 'orchestrator' ? 'Top-level planning & coordination'
                        : tier === 'specialist' ? 'Domain expertise & analysis'
+                       : tier === 'installed' ? 'Discovered in ~/.claude/agents'
                        : 'Execution & implementation'}
                     </div>
                   </div>

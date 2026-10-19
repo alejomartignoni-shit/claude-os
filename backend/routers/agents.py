@@ -1,6 +1,10 @@
+import pathlib
+import re
 from fastapi import APIRouter
 
 router = APIRouter()
+
+AGENTS_PATH = pathlib.Path(r"C:/Users/Alejo/.claude/agents")
 
 AGENTS = [
     {"name": "claude", "description": "General-purpose Claude agent. Default orchestrator.", "model": "claude-sonnet-4-6", "tier": "orchestrator", "status": "online"},
@@ -21,6 +25,42 @@ AGENTS = [
 ]
 
 
+def read_frontmatter(path):
+    content = path.read_text(encoding="utf-8", errors="ignore")
+    match = re.match(r"^---\s*\n(.*?)\n---", content, re.S)
+    if not match:
+        return {}
+    fields = {}
+    for line in match.group(1).splitlines():
+        key, sep, value = line.partition(":")
+        if sep and not line[:1].isspace():
+            fields[key.strip()] = value.strip().strip("\"'")
+    return fields
+
+
+def get_installed_agents():
+    if not AGENTS_PATH.exists():
+        return []
+    known = {a["name"].lower() for a in AGENTS}
+    installed = []
+    for f in sorted(AGENTS_PATH.glob("*.md")):
+        try:
+            meta = read_frontmatter(f)
+        except Exception:
+            continue
+        name = meta.get("name") or f.stem
+        if name.lower() in known or f.stem.lower() in known:
+            continue
+        installed.append({
+            "name": name,
+            "description": meta.get("description", "")[:160],
+            "model": meta.get("model", ""),
+            "tier": "installed",
+            "status": "online",
+        })
+    return installed
+
+
 @router.get("/agents")
 def get_agents():
-    return AGENTS
+    return AGENTS + get_installed_agents()

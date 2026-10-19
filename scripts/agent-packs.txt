@@ -1,0 +1,21 @@
+# Agents copied from msitarzewski/agency-agents into ~/.claude/agents.
+# One path per line, relative to the repo root. Lines starting with # are ignored.
+# Why each one was picked: docs/research/2026-10-19-agent-packs.md
+
+# Quality gates
+testing/testing-reality-checker.md
+design/design-ui-finish-gate-reviewer.md
+
+# Building
+engineering/engineering-rapid-prototyper.md
+engineering/engineering-multi-agent-systems-architect.md
+
+# Product
+product/product-manager.md
+product/product-trend-researcher.md
+product/product-feedback-synthesizer.md
+
+# Growth & content
+marketing/marketing-growth-hacker.md
+marketing/marketing-content-creator.md
+marketing/marketing-x-twitter-intelligence-analyst.md
