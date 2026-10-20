@@ -56,7 +56,11 @@ Tus agentes actuales son casi todos de ingeniería, así que estos rellenan prod
 
 Si un plugin molesta, se puede desactivar sin desinstalarlo: `claude plugin disable <plugin>`.
 
-## Cómo correrlo (en tu PC)
+## Dónde quedan instalados
+
+**Ya activos en este proyecto.** Los 10 agentes están guardados en `.claude/agents/` y los 2 plugins en `.claude/settings.json`. Se activan solos cada vez que abres Claude Code dentro de claude-os, en tu PC o en la nube. La primera vez, Claude Code te pedirá confirmar el marketplace de wshobson.
+
+**En todos tus proyectos (opcional).** Si los quieres también fuera de claude-os, corre el instalador una vez en tu PC. Los copia a `~/.claude/agents`:
 
 ```powershell
 cd C:\Users\Alejo\claude-os
@@ -64,7 +68,7 @@ python scripts\install_agent_packs.py --dry-run   # muestra el plan y no cambia 
 python scripts\install_agent_packs.py             # instala o actualiza
 ```
 
-Después reinicia Claude Code y escribe `/agents`. En claude-os, la página **Agents** muestra ahora una sección **Installed** con todo lo que haya en `~/.claude/agents`.
+Después reinicia Claude Code y escribe `/agents`. En claude-os, la página **Agents** muestra una sección **Installed** con lo que haya en `~/.claude/agents` y en el `.claude/agents` del proyecto, sin repetir agentes.
 
 - **Actualizar:** vuelve a correr el script. Si editaste un agente a mano, el script lo respeta, salvo que pases `--force`.
 - **Deshacer:** borra los 10 `.md` de `~/.claude/agents` y ejecuta `claude plugin uninstall python-development@claude-code-workflows` (y lo mismo con `javascript-typescript`).

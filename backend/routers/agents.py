@@ -4,7 +4,11 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-AGENTS_PATH = pathlib.Path(r"C:/Users/Alejo/.claude/agents")
+# Global agents first, then the ones committed to this repo's .claude/agents
+AGENTS_PATHS = [
+    pathlib.Path(r"C:/Users/Alejo/.claude/agents"),
+    pathlib.Path(__file__).resolve().parents[2] / ".claude" / "agents",
+]
 
 AGENTS = [
     {"name": "claude", "description": "General-purpose Claude agent. Default orchestrator.", "model": "claude-sonnet-4-6", "tier": "orchestrator", "status": "online"},
@@ -39,25 +43,27 @@ def read_frontmatter(path):
 
 
 def get_installed_agents():
-    if not AGENTS_PATH.exists():
-        return []
     known = {a["name"].lower() for a in AGENTS}
     installed = []
-    for f in sorted(AGENTS_PATH.glob("*.md")):
-        try:
-            meta = read_frontmatter(f)
-        except Exception:
+    for agents_path in AGENTS_PATHS:
+        if not agents_path.exists():
             continue
-        name = meta.get("name") or f.stem
-        if name.lower() in known or f.stem.lower() in known:
-            continue
-        installed.append({
-            "name": name,
-            "description": meta.get("description", "")[:160],
-            "model": meta.get("model", ""),
-            "tier": "installed",
-            "status": "online",
-        })
+        for f in sorted(agents_path.glob("*.md")):
+            try:
+                meta = read_frontmatter(f)
+            except Exception:
+                continue
+            name = meta.get("name") or f.stem
+            if name.lower() in known or f.stem.lower() in known:
+                continue
+            known.add(name.lower())
+            installed.append({
+                "name": name,
+                "description": meta.get("description", "")[:160],
+                "model": meta.get("model", ""),
+                "tier": "installed",
+                "status": "online",
+            })
     return installed
 
 
